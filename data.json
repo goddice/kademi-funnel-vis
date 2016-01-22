@@ -1,49 +1,145 @@
 {
-    "stages" : [
+    "stages": [
         {
-            "name" : "acquisition",
-            "sources" : [
+            "name": "acquisition",
+            "sources": [
                 {
-                    "name" : "google",
-                    "count" : 10
+                    "name": "google",
+                    "count": 10,
+                    "bydate": [
+                        {
+                            "data": "1/1/2016",
+                            "leads": 5
+                        },
+                        {
+                            "data": "2/1/2016",
+                            "leads": 3
+                        },
+                        {
+                            "data": "3/1/2016",
+                            "leads": 2
+                        }
+                    ]
                 },
                 {
-                    "name" : "organic",
-                    "count" : 10
+                    "name": "organic",
+                    "count": 10,
+                    "bydate": [
+                        {
+                            "data": "1/1/2016",
+                            "leads": 5
+                        },
+                        {
+                            "data": "2/1/2016",
+                            "leads": 3
+                        },
+                        {
+                            "data": "3/1/2016",
+                            "leads": 2
+                        }
+                    ]
                 },
                 {
-                    "name" : "facebook",
-                    "count" : 15
+                    "name": "facebook",
+                    "count": 15,
+                    "bydate": [
+                        {
+                            "data": "1/1/2016",
+                            "leads": 5
+                        },
+                        {
+                            "data": "2/1/2016",
+                            "leads": 7
+                        },
+                        {
+                            "data": "3/1/2016",
+                            "leads": 3
+                        }
+                    ]
                 },
                 {
-                    "name" : "linkedin",
-                    "count" : 9
+                    "name": "linkedin",
+                    "count": 9,
+                    "bydate": [
+                        {
+                            "data": "1/1/2016",
+                            "leads": 4
+                        },
+                        {
+                            "data": "2/1/2016",
+                            "leads": 3
+                        },
+                        {
+                            "data": "3/1/2016",
+                            "leads": 2
+                        }
+                    ]
                 }
             ]
         },
         {
-            "name" : "engagement",
-            "sources" : [
+            "name": "engagement",
+            "sources": [
                 {
-                    "name" : "google",
-                    "count" : 8
+                    "name": "google",
+                    "count": 8,
+                    "bydate": [
+                        {
+                            "data": "1/1/2016",
+                            "leads": 4
+                        },
+                        {
+                            "data": "2/1/2016",
+                            "leads": 2
+                        },
+                        {
+                            "data": "3/1/2016",
+                            "leads": 2
+                        }
+                    ]
                 },
                 {
-                    "name" : "facebook",
-                    "count" : 7
+                    "name": "facebook",
+                    "count": 7,
+                    "bydate": [
+                        {
+                            "data": "1/1/2016",
+                            "leads": 3
+                        },
+                        {
+                            "data": "2/1/2016",
+                            "leads": 4
+                        }
+                    ]
                 }
             ]
         },
         {
-            "name" : "conversion",
-            "sources" : [
+            "name": "conversion",
+            "sources": [
                 {
-                    "name" : "google",
-                    "count" : 4
+                    "name": "google",
+                    "count": 4,
+                    "bydate": [
+                        {
+                            "data": "2/1/2016",
+                            "leads": 2
+                        },
+                        {
+                            "data": "3/1/2016",
+                            "leads": 2
+                        }
+                    ]
                 },
                 {
-                    "name" : "facebook",
-                    "count" : 2
+                    "name": "facebook",
+                    "count": 2,
+                    "bydate": [
+                        {
+                            "data": "1/1/2016",
+                            "leads": 2
+                        }
+                    ]
                 }
             ]
         }
