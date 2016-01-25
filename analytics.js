@@ -190,20 +190,46 @@ function initLeadManAnalytics() {
 
         for (var t = 0; t < size; t++)
         {
+            var date_str_len = 66;
             var chart_data = chart_data_arr[t];
             var chart_width = trapBox.right((t + 1) * totalHeight / size) - trapBox.left((t + 1) * totalHeight / size);
-            var chart_height = levelHeight * 0.8;
+            var chart_height = levelHeight * 0.4;
             var chart_div = chart_width / chart_data.dates.length;
+            var stride = Math.ceil(date_str_len / chart_div);
             for (var i=0; i<chart_data.leads.length; i++)
             {
                 var base_x = trapBox.left((t + 1) * totalHeight / size) + chart_div * i;
                 var base_y = (t + 1) * totalHeight / size - 5;
 
-                svg.append("text")
-                    .style("fill", "black")
-                    .attr("x", base_x + 10)
-                    .attr("y", base_y)
-                    .text(chart_data.dates[i]);
+                if (i === chart_data.leads.length - 1)
+                {
+                    if (stride < 2)
+                    {
+                        if (i % stride === 0)
+                        {
+                            svg.append("text")
+                                .style("fill", "black")
+                                .attr("x", base_x + 5)
+                                .attr("y", base_y)
+                                .attr("font-size", "13px")
+                                .attr("font-family", "sans-serif")
+                                .text(chart_data.dates[i]);
+                        }
+                    }
+                }
+                else
+                {
+                    if (i % stride === 0)
+                    {
+                        svg.append("text")
+                            .style("fill", "black")
+                            .attr("x", base_x)
+                            .attr("y", base_y)
+                            .attr("font-size", "13px")
+                            .attr("font-family", "sans-serif")
+                            .text(chart_data.dates[i]);
+                    }
+                }
 
                 base_y -= 15;
 
@@ -222,6 +248,8 @@ function initLeadManAnalytics() {
         }
 
 
+        //svg.append("text").attr("x", 1100).attr("y", 200).attr("font-size", "13px").attr("font-family", "sans-serif").text("99/99/9999");
+        //svg.append("rect").attr("x", 1100).attr("y", 200).attr("width", 66).attr("height", 20);
 
         var force = d3.layout.force()
                 .size([width, height]);
@@ -284,8 +312,8 @@ function initLeadManAnalytics() {
                                 var rad = d.radius;
                                 var trap = new Trapezoidal([[trapBox.left(idx * totalHeight / size), idx * totalHeight / size],
                                     [trapBox.right(idx * totalHeight / size), idx * totalHeight / size],
-                                    [trapBox.right((idx + 0.5) * totalHeight / size), (idx + 0.5) * totalHeight / size],
-                                    [trapBox.left((idx + 0.5) * totalHeight / size), (idx + 0.5) * totalHeight / size]]);
+                                    [trapBox.right((idx + 0.70) * totalHeight / size), (idx + 0.70) * totalHeight / size],
+                                    [trapBox.left((idx + 0.70) * totalHeight / size), (idx + 0.70) * totalHeight / size]]);
                                 return d.y = Math.max(trap.top() + rad + 8, Math.min(trap.button() - rad - 8, d.y));
                             })
                             .attr("cx", function (d) {
@@ -293,8 +321,8 @@ function initLeadManAnalytics() {
                                 var rad = d.radius;
                                 var trap = new Trapezoidal([[trapBox.left(idx * totalHeight / size), idx * totalHeight / size],
                                     [trapBox.right(idx * totalHeight / size), idx * totalHeight / size],
-                                    [trapBox.right((idx + 0.5) * totalHeight / size), (idx + 0.5) * totalHeight / size],
-                                    [trapBox.left((idx + 0.5) * totalHeight / size), (idx + 0.5) * totalHeight / size]]);
+                                    [trapBox.right((idx + 0.70) * totalHeight / size), (idx + 0.70) * totalHeight / size],
+                                    [trapBox.left((idx + 0.70) * totalHeight / size), (idx + 0.70) * totalHeight / size]]);
                                 return d.x = Math.max(trap.left(d.y) + rad + 11, Math.min(trap.right(d.y) - rad - 11, d.x));
                             });
                 })
