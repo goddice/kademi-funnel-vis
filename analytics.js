@@ -126,7 +126,10 @@ function initLeadManAnalytics() {
             {
                 for (var j=0; j<source[i].bydate.length; j++)
                 {
-                    date_set.add(source[i].bydate[j].data);
+                    var date_str = source[i].bydate[j].data;
+                    var date_list = date_str.split("/");
+                    var date = parseInt(date_list[0]) + parseInt(date_list[1]) * 100 + parseInt(date_list[2]) * 100000;
+                    date_set.add(date);
                 }
             }
 
@@ -146,7 +149,11 @@ function initLeadManAnalytics() {
             {
                 for (var j=0; j<source[i].bydate.length; j++)
                 {
-                    var idx = chart_data.dates.indexOf(source[i].bydate[j].data);
+                    var date_str = source[i].bydate[j].data;
+                    var date_list = date_str.split("/");
+                    var date = parseInt(date_list[0]) + parseInt(date_list[1]) * 100 + parseInt(date_list[2]) * 100000;
+
+                    var idx = chart_data.dates.indexOf(date);
                     chart_data.leads[idx][i] = source[i].bydate[j].leads;
                 }
             }
@@ -176,21 +183,27 @@ function initLeadManAnalytics() {
             chart_data_arr.push(chart_data);
             max_leadsum = Math.max(max_leadsum, chart_data.max_leadsum);
         }
-        for (var t = 0; t < size; t++)
+
+        //for (var t = 0; t < size; t++)
+        //{
+        //    var chart_data = chart_data_arr[t];
+        //    for (var i=0; i<chart_data.leads.length; i++)
+        //    {
+        //        for (var j=0; j<chart_data.leads[i].length; j++)
+        //        {
+        //            chart_data.leads[i][j] /= max_leadsum;
+        //        }
+        //    }
+        //}
+
+        function getDateStr(date)
         {
-            var chart_data = chart_data_arr[t];
-            for (var i=0; i<chart_data.leads.length; i++)
-            {
-                for (var j=0; j<chart_data.leads[i].length; j++)
-                {
-                    chart_data.leads[i][j] /= max_leadsum;
-                }
-            }
+            return (date%100).toString() + "/" + (Math.floor(date/100)%100).toString() + "/" + (Math.floor(date/100000)).toString();
         }
 
         for (var t = 0; t < size; t++)
         {
-            var date_str_len = 66;
+            var date_str_len = 50;
             var chart_data = chart_data_arr[t];
             var chart_width = trapBox.right((t + 1) * totalHeight / size) - trapBox.left((t + 1) * totalHeight / size);
             var chart_height = levelHeight * 0.4;
@@ -213,7 +226,7 @@ function initLeadManAnalytics() {
                                 .attr("y", base_y)
                                 .attr("font-size", "10px")
                                 .attr("font-family", "sans-serif")
-                                .text(chart_data.dates[i]);
+                                .text(getDateStr(chart_data.dates[i]));
                         }
                     }
                 }
@@ -227,7 +240,7 @@ function initLeadManAnalytics() {
                             .attr("y", base_y)
                             .attr("font-size", "10px")
                             .attr("font-family", "sans-serif")
-                            .text(chart_data.dates[i]);
+                            .text(getDateStr(chart_data.dates[i]));
                     }
                 }
 
@@ -235,21 +248,32 @@ function initLeadManAnalytics() {
 
                 for (var j=0; j<chart_data.leads[i].length; j++)
                 {
-                    var l = chart_data.leads[i][j] * chart_height;
+                    var l = chart_data.leads[i][j] * chart_height / max_leadsum;
                     svg.append("rect")
                         .attr("x", base_x)
                         .attr("y", base_y - l)
-                        .attr("width", chart_div - 5)
+                        .attr("width", chart_div - 1)
                         .attr("height", l)
-                        .attr("fill", stringToColorCode(chart_data.names[j]));
+                        .attr("fill", stringToColorCode(chart_data.names[j]))
+                        .append("svg:title")
+                        .text(function () {
+                            info = "";
+                            info += "date: " + getDateStr(chart_data.dates[i]) + "\n";
+                            info += "Leads of each source:" + "\n";
+                            for (var jj=0; jj<chart_data.leads[i].length; jj++)
+                            {
+                                if (chart_data.leads[i][jj] != 0)
+                                    info += chart_data.names[jj] + ": " + chart_data.leads[i][jj].toString() + "\n";
+                            }
+                            return info;
+                        });
                     base_y = base_y - l;
                 }
             }
         }
 
-
-        //svg.append("text").attr("x", 1100).attr("y", 200).attr("font-size", "13px").attr("font-family", "sans-serif").text("99/99/9999");
-        //svg.append("rect").attr("x", 1100).attr("y", 200).attr("width", 66).attr("height", 20);
+        //svg.append("text").attr("x", 1100).attr("y", 200).attr("font-size", "10px").attr("font-family", "sans-serif").text("99/99/9999");
+        //svg.append("rect").attr("x", 1100).attr("y", 200).attr("width", 50).attr("height", 20);
 
         var force = d3.layout.force()
                 .size([width, height]);
