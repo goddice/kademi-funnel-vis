@@ -211,7 +211,7 @@ function initLeadManAnalytics() {
                                 .style("fill", "black")
                                 .attr("x", base_x + 5)
                                 .attr("y", base_y)
-                                .attr("font-size", "13px")
+                                .attr("font-size", "10px")
                                 .attr("font-family", "sans-serif")
                                 .text(chart_data.dates[i]);
                         }
@@ -225,7 +225,7 @@ function initLeadManAnalytics() {
                             .style("fill", "black")
                             .attr("x", base_x)
                             .attr("y", base_y)
-                            .attr("font-size", "13px")
+                            .attr("font-size", "10px")
                             .attr("font-family", "sans-serif")
                             .text(chart_data.dates[i]);
                     }
