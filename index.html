@@ -13,8 +13,20 @@
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="analytics.js"></script>
         <script type="text/javascript">
-            $(function () {
-                initLeadManAnalytics();
+            $("div.funnel").funnel({
+                stageHeight: "150px",
+                stageNameFontSize: "20px",
+                stageNameFontFamily: "sans-serif",
+                stageNameFontColor: "black",
+                legendNameFontSize: "20px",
+                legendNameFontFamily: "sans-serif",
+                legendNameFontColor: "black",
+                histogramLabelFontSize: "11px",
+                histogramLabelFontFamily: "sans-serif",
+                histogramLabelFontColor:  "black",
+                funnelBackgroundColor: "white",
+                funnelBorderColor: "gray",
+                funnelBorderThickness: "1px"
             });
         </script>
     </body>
