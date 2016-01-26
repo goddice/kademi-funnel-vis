@@ -1,0 +1,140 @@
+{
+    "leadsGroup": "carEnquries",
+    "sources": ["facebook", "google search", "google ad", "website"],
+    "entryGoals": [{
+            "cost": 0,
+            "stageName": "cold",
+            "enterActions": [],
+            "exitActions": [{
+                    "amountMvel": "1",
+                    "dataSeriesName": "newLeads",
+                    "recordDateMvel": "createDate"
+                }],
+            "nextGoal": {
+                "cost": 0,
+                "stageName": "warm",
+                "enterActions": [],
+                "exitActions": [{
+                        "subject": "Thanks, we'll be in touch",
+                        "replyTo": "someone@someone.com",
+                        "from": "someone@someone.com",
+                        "contentFileName": "thankyou.html"
+                    }],
+                "nextGoal": {
+                    "cost": 0,
+                    "stageName": "hot",
+                    "enterActions": [{
+                            "runHour": 0,
+                            "descriptionMvel": "Contact the customer to arrange a time",
+                            "assignToOrgRule": "hk",
+                            "assignToGroupRule": "retail",
+                            "periodMultiples": 3,
+                            "frequency": "days"
+                        }],
+                    "exitActions": [],
+                    "nextGoal": {
+                        "cost": 0,
+                        "stageName": "",
+                        "enterActions": [{
+                                "runHour": 0,
+                                "descriptionMvel": "Have the test drive",
+                                "assignToOrgRule": "",
+                                "assignToGroupRule": "",
+                                "periodMultiples": 0,
+                                "frequency": ""
+                            }],
+                        "exitActions": [],
+                        "nextGoal": {
+                            "cost": 0,
+                            "stageName": "Closed",
+                            "enterActions": [],
+                            "exitActions": [{
+                                    "amountMvel": "dealAmount",
+                                    "dataSeriesName": "sales",
+                                    "recordDateMvel": "closedDate"
+                                }],
+                            "nextGoal": null,
+                            "probability": 0,
+                            "name": "CloseTheSale",
+                            "source": ""
+                        },
+                        "probability": 0,
+                        "name": "doneTestDrive",
+                        "source": ""
+                    },
+                    "probability": 0,
+                    "name": "testDriveBooked",
+                    "source": ""
+                },
+                "probability": 0,
+                "name": "submitForm",
+                "source": ""
+            },
+            "probability": 0,
+            "name": "viewLandingPage",
+            "source": ""
+        }, {
+            "cost": 0,
+            "stageName": "cold",
+            "enterActions": [],
+            "exitActions": [{
+                    "amountMvel": "1",
+                    "dataSeriesName": "newLeads",
+                    "recordDateMvel": "createDate"
+                }],
+            "nextGoal": {
+                "cost": 0,
+                "stageName": "hot",
+                "enterActions": [{
+                        "runHour": 0,
+                        "descriptionMvel": "Contact the customer to arrange a time",
+                        "assignToOrgRule": "hk",
+                        "assignToGroupRule": "retail",
+                        "periodMultiples": 3,
+                        "frequency": "days"
+                    }],
+                "exitActions": [],
+                "nextGoal": {
+                    "cost": 0,
+                    "stageName": "",
+                    "enterActions": [{
+                            "runHour": 0,
+                            "descriptionMvel": "Have the test drive",
+                            "assignToOrgRule": "",
+                            "assignToGroupRule": "",
+                            "periodMultiples": 0,
+                            "frequency": ""
+                        }],
+                    "exitActions": [],
+                    "nextGoal": {
+                        "cost": 0,
+                        "stageName": "Closed",
+                        "enterActions": [],
+                        "exitActions": [{
+                                "amountMvel": "dealAmount",
+                                "dataSeriesName": "sales",
+                                "recordDateMvel": "closedDate"
+                            }],
+                        "nextGoal": null,
+                        "probability": 0,
+                        "name": "CloseTheSale",
+                        "source": ""
+                    },
+                    "probability": 0,
+                    "name": "doneTestDrive",
+                    "source": ""
+                },
+                "probability": 0,
+                "name": "testDriveBooked",
+                "source": ""
+            },
+            "probability": 0,
+            "name": "Direct Entry",
+            "source": ""
+        }],
+    "name": "Car sales",
+    "stages": ["cold", "warm", "hot"],
+    "defaultInitialGoal": "Direct Entry",
+    "title": "Cusstomer requests test drive",
+    "extraFields": []
+}
