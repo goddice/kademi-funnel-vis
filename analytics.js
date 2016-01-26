@@ -10,6 +10,20 @@ function initLeadManAnalytics() {
             .attr("width", 2 * width)
             .attr("height", 2 * height);
 
+    var tooltip = d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("text-align", "left")
+        //.style("width", "60px")
+        //.style("height", "28px")
+        .style("padding", "2px")
+        .style("font", "12px sans-serif")
+        .style("background", "lightsteelblue")
+        .style("border", "0px")
+        .style("border-radius", "8px")
+        .style("z-index", "10")
+        .style("visibility", "hidden");
+
     var data_url = "data.json";
     //var data_url = "https://raw.githubusercontent.com/goddice/kademi-funnel-vis/master/data.json";
     //var data_url = window.location.pathname + "?asJson";
@@ -59,7 +73,7 @@ function initLeadManAnalytics() {
         {
             for (var i = 0; i < json.stages[t].sources.length; i++)
             {
-                data_set.push({"level": t, "name": json.stages[t].sources[i].name, "radius": Math.sqrt(json.stages[t].sources[i].count / maxCount) * (levelHeight / 2 - 20)});
+                data_set.push({"level": t, "name": json.stages[t].sources[i].name, "radius": Math.sqrt(json.stages[t].sources[i].count / maxCount) * (levelHeight / 2 - 20), "count": json.stages[t].sources[i].count});
                 name_set.add(json.stages[t].sources[i].name);
             }
         }
@@ -184,18 +198,6 @@ function initLeadManAnalytics() {
             max_leadsum = Math.max(max_leadsum, chart_data.max_leadsum);
         }
 
-        //for (var t = 0; t < size; t++)
-        //{
-        //    var chart_data = chart_data_arr[t];
-        //    for (var i=0; i<chart_data.leads.length; i++)
-        //    {
-        //        for (var j=0; j<chart_data.leads[i].length; j++)
-        //        {
-        //            chart_data.leads[i][j] /= max_leadsum;
-        //        }
-        //    }
-        //}
-
         function getDateStr(date)
         {
             return (date%100).toString() + "/" + (Math.floor(date/100)%100).toString() + "/" + (Math.floor(date/100000)).toString();
@@ -279,76 +281,92 @@ function initLeadManAnalytics() {
                 .size([width, height]);
 
         var node = svg.selectAll("circle")
-                .data(data_set)
-                .enter().append("svg:circle")
-                .attr("r", function (d) {
-                    return d.radius;
-                })
-                .style("fill", function (d) {
-                    return stringToColorCode(d.name);
-                })
-                .style("stroke", function (d) {
-                    return d3.rgb(stringToColorCode(d.name)).darker();
-                })
-                .call(force.drag);
+            .data(data_set)
+            .enter().append("svg:circle")
+            .attr("r", function (d) {
+                return d.radius;
+            })
+            .style("fill", function (d) {
+                return stringToColorCode(d.name);
+            })
+            .style("stroke", function (d) {
+                return d3.rgb(stringToColorCode(d.name)).darker();
+            })
+            .on("mouseover", function() {
+                return tooltip.style("visibility", "visible");
+            })
+            .on("mousemove", function(d) {
+                console.log("y: " + d.cy + " yy: " + d.y);
+                return tooltip.style("top", (d.y + 20)+"px").style("left",(d.x - d.radius / 2)+"px")
+                    .html(function () {
+                        var tip = "";
+                        tip += "name:  " + d.name.toString() + "<br>";
+                        tip += "count: " + d.count.toString();
+                        return tip;
+                    });
+            })
+            .on("mouseout", function() {
+                return tooltip.style("visibility", "hidden");
+            })
+            .call(force.drag);
         force
-                .nodes(data_set)
-                //.charge(-200)
-                //.gravity(0.002)
-                .gravity(-0.0002)
-                .charge(-200)
-                .on("tick", function () {
+            .nodes(data_set)
+            //.charge(-200)
+            //.gravity(0.002)
+            .gravity(-0.0002)
+            .charge(-200)
+            .on("tick", function () {
 
-                    var collide = function (node) {
-                        var r = node.radius + 16,
-                                nx1 = node.x - r,
-                                nx2 = node.x + r,
-                                ny1 = node.y - r,
-                                ny2 = node.y + r;
-                        return function (quad, x1, y1, x2, y2) {
-                            if (quad.point && (quad.point !== node)) {
-                                var x = node.x - quad.point.x,
-                                        y = node.y - quad.point.y,
-                                        l = Math.sqrt(x * x + y * y),
-                                        r = node.radius + quad.point.radius + 10;
-                                if (l < r) {
-                                    l = (l - r) / l * .5;
-                                    node.x -= x *= l;
-                                    node.y -= y *= l;
-                                    quad.point.x += x;
-                                    quad.point.y += y;
-                                }
+                var collide = function (node) {
+                    var r = node.radius + 16,
+                        nx1 = node.x - r,
+                        nx2 = node.x + r,
+                        ny1 = node.y - r,
+                        ny2 = node.y + r;
+                    return function (quad, x1, y1, x2, y2) {
+                        if (quad.point && (quad.point !== node)) {
+                            var x = node.x - quad.point.x,
+                                y = node.y - quad.point.y,
+                                l = Math.sqrt(x * x + y * y),
+                                r = node.radius + quad.point.radius + 10;
+                            if (l < r) {
+                                l = (l - r) / l * .5;
+                                node.x -= x *= l;
+                                node.y -= y *= l;
+                                quad.point.x += x;
+                                quad.point.y += y;
                             }
-                            return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
-                        };
+                        }
+                        return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
                     };
+                };
 
-                    var q = d3.geom.quadtree(data_set),
-                            i = 0,
-                            n = data_set.length;
+                var q = d3.geom.quadtree(data_set),
+                    i = 0,
+                    n = data_set.length;
 
-                    while (++i < n)
-                        q.visit(collide(data_set[i]));
+                while (++i < n)
+                    q.visit(collide(data_set[i]));
 
-                    node
-                            .attr("cy", function (d) {
-                                var idx = d.level;
-                                var rad = d.radius;
-                                var trap = new Trapezoidal([[trapBox.left(idx * totalHeight / size), idx * totalHeight / size],
-                                    [trapBox.right(idx * totalHeight / size), idx * totalHeight / size],
-                                    [trapBox.right((idx + 0.70) * totalHeight / size), (idx + 0.70) * totalHeight / size],
-                                    [trapBox.left((idx + 0.70) * totalHeight / size), (idx + 0.70) * totalHeight / size]]);
-                                return d.y = Math.max(trap.top() + rad + 8, Math.min(trap.button() - rad - 8, d.y));
-                            })
-                            .attr("cx", function (d) {
-                                var idx = d.level;
-                                var rad = d.radius;
-                                var trap = new Trapezoidal([[trapBox.left(idx * totalHeight / size), idx * totalHeight / size],
-                                    [trapBox.right(idx * totalHeight / size), idx * totalHeight / size],
-                                    [trapBox.right((idx + 0.70) * totalHeight / size), (idx + 0.70) * totalHeight / size],
-                                    [trapBox.left((idx + 0.70) * totalHeight / size), (idx + 0.70) * totalHeight / size]]);
-                                return d.x = Math.max(trap.left(d.y) + rad + 11, Math.min(trap.right(d.y) - rad - 11, d.x));
-                            });
+                node
+                    .attr("cy", function (d) {
+                        var idx = d.level;
+                        var rad = d.radius;
+                        var trap = new Trapezoidal([[trapBox.left(idx * totalHeight / size), idx * totalHeight / size],
+                            [trapBox.right(idx * totalHeight / size), idx * totalHeight / size],
+                            [trapBox.right((idx + 0.70) * totalHeight / size), (idx + 0.70) * totalHeight / size],
+                            [trapBox.left((idx + 0.70) * totalHeight / size), (idx + 0.70) * totalHeight / size]]);
+                        return d.y = Math.max(trap.top() + rad + 8, Math.min(trap.button() - rad - 8, d.y));
+                    })
+                    .attr("cx", function (d) {
+                        var idx = d.level;
+                        var rad = d.radius;
+                        var trap = new Trapezoidal([[trapBox.left(idx * totalHeight / size), idx * totalHeight / size],
+                            [trapBox.right(idx * totalHeight / size), idx * totalHeight / size],
+                            [trapBox.right((idx + 0.70) * totalHeight / size), (idx + 0.70) * totalHeight / size],
+                            [trapBox.left((idx + 0.70) * totalHeight / size), (idx + 0.70) * totalHeight / size]]);
+                        return d.x = Math.max(trap.left(d.y) + rad + 11, Math.min(trap.right(d.y) - rad - 11, d.x));
+                    });
                 })
                 .start();
 
