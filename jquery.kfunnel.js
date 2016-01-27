@@ -1,3 +1,7 @@
+/*
+ * Version 0.1.0
+ */
+
 (function ($) {
     $.fn.funnel = function (options) {
         var setting = $.extend({
