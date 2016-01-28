@@ -5,6 +5,7 @@
             "sources": [
                 {
                     "name": "google",
+                    "id" : "123",
                     "count": 10,
                     "bydate": [
                         {
@@ -89,6 +90,7 @@
                 },
                 {
                     "name": "organic",
+                    "id" : "124",
                     "count": 10,
                     "bydate": [
                         {
@@ -107,6 +109,7 @@
                 },
                 {
                     "name": "facebook",
+                    "id" : "125",
                     "count": 15,
                     "bydate": [
                         {
@@ -125,6 +128,7 @@
                 },
                 {
                     "name": "linkedin",
+                    "id" : "126",
                     "count": 13,
                     "bydate": [
                         {
