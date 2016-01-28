@@ -1,5 +1,5 @@
 /*
- * Version 0.1.0
+ * Version 0.1.1
  */
 
 (function ($) {
@@ -36,6 +36,10 @@
                     .attr("width", 2 * width)
                     .attr("height", 2 * height);
 
+            var svg_pos = $(svg[0]).position();
+
+            $(n.parentElement).find('div').remove();
+
             var tooltip = d3.select(n.parentElement)
                     .append("div")
                     .style("position", "absolute")
@@ -51,7 +55,9 @@
             var data_url = setting.url;
 
             d3.json(data_url, function (resp) {
-                handleDataReceived(resp);
+                if (resp != null) {
+                    handleDataReceived(resp);
+                }
             });
 
             function handleDataReceived(resp) {
@@ -260,7 +266,7 @@
                             }
                         })
                         .on("mousemove", function (d) {
-                            return tooltip.style("top", (d.y + 20) + "px").style("left", (d.x - d.radius / 2) + "px")
+                            return tooltip.style("top", ((svg_pos.top + d.y) - d.radius * 2) + "px").style("left", ((svg_pos.left + d.x) - d.radius) + "px")
                                     .html(function () {
                                         var tip = "";
                                         tip += "name:  " + d.name.toString() + "<br>";
