@@ -12,6 +12,7 @@
             stageNameFontColor: "white",
             stageNameFontPadding: "3px",
             stageNameBackgroundColor: "black",
+            stageNameBackgroundOpacity: 0.8,
             legendNameFontSize: "20px",
             legendNameFontFamily: "sans-serif",
             legendNameFontColor: "black",
@@ -448,7 +449,7 @@
                         .attr("width", bbox.width + 2 * padding)
                         .attr("height", (bbox.height + 2 * padding))
                         .attr("fill", setting.stageNameBackgroundColor)
-                        .attr("opacity", 0.5);
+                        .attr("opacity", setting.stageNameBackgroundOpacity);
 
                     text.attr("x", adjustTopWidth/2 - bbox.width/2)
                         .attr("y", t * totalHeight / size + bbox.height / 2 + padding + 5);
