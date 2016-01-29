@@ -1,15 +1,15 @@
 /*
- * Version 0.1.1 
+ * Version 0.1.3
  */
 
 (function ($) {
     $.fn.funnel = function (options) {
         var setting = $.extend({
             // defaults
-            stageHeight: "200px",
-            stageNameFontSize: "20px",
+            stageHeight: "190px",
+            stageNameFontSize: "18px",
             stageNameFontFamily: "sans-serif",
-            stageNameFontColor: "pink",
+            stageNameFontColor: "white",
             stageNameBackgroundColor: "black",
             legendNameFontSize: "20px",
             legendNameFontFamily: "sans-serif",
