@@ -10,6 +10,7 @@
             stageNameFontSize: "18px",
             stageNameFontFamily: "sans-serif",
             stageNameFontColor: "white",
+            stageNameFontPadding: "3px",
             stageNameBackgroundColor: "black",
             legendNameFontSize: "20px",
             legendNameFontFamily: "sans-serif",
@@ -431,7 +432,7 @@
 
                 for (var t=0; t<size; t++)
                 {
-
+                    var padding = parseInt(setting.stageNameFontPadding);
                     var text = svg.append("text")
                         .attr("font-size", setting.stageNameFontSize)
                         .attr("font-family", setting.stageNameFontFamily)
@@ -442,21 +443,22 @@
                     console.log(bbox);
 
                     svg.append("rect")
-                        .attr("x", adjustTopWidth/2 - bbox.width/2 - 4)
+                        .attr("x", adjustTopWidth/2 - bbox.width/2 - padding)
                         .attr("y", t * totalHeight / size)
-                        .attr("width", bbox.width + 8)
-                        .attr("height", bbox.height * 1.5)
-                        .attr("fill", setting.stageNameBackgroundColor);
+                        .attr("width", bbox.width + 2 * padding)
+                        .attr("height", (bbox.height + 2 * padding))
+                        .attr("fill", setting.stageNameBackgroundColor)
+                        .attr("opacity", 0.5);
 
                     text.attr("x", adjustTopWidth/2 - bbox.width/2)
-                        .attr("y", t * totalHeight / size + bbox.height);
+                        .attr("y", t * totalHeight / size + bbox.height / 2 + padding + 5);
 
                     svg.append("text")
                         .attr("font-size", setting.stageNameFontSize)
                         .attr("font-family", setting.stageNameFontFamily)
                         .attr("fill", setting.stageNameFontColor)
                         .attr("x", adjustTopWidth/2 - bbox.width/2)
-                        .attr("y", t * totalHeight / size + bbox.height)
+                        .attr("y", t * totalHeight / size + bbox.height / 2 + padding + 5)
                         .text(json.stages[t].name);
                 }
             }

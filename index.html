@@ -15,6 +15,7 @@
         <script type="text/javascript">
             function initFunnel() {
                 $("div #funnel").funnel({
+                    stageNameFontPadding: "10px",
                     onBubbleClick: function (d) {
                         var t = $(this);
                         console.log([t, d.id]);
